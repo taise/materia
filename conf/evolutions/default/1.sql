@@ -6,8 +6,9 @@
 create table product (
   id                        bigint auto_increment not null,
   name                      varchar(255) not null,
-  cost                      bigint not null,
-  origin                    varchar(255) not null,
+  price                     bigint not null,
+  quantity                  varchar(255) not null,
+  location                  varchar(255) not null,
   create_date               datetime not null,
   constraint pk_product primary key (id))
 ;

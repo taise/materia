@@ -21,10 +21,13 @@ public class Product extends Model {
   public String name;
 
   @NotNull
-  public Long cost;
+  public Long price;
 
   @NotNull
-  public String origin;
+  public String quantity;
+
+  @NotNull
+  public String location;
 
   @CreatedTimestamp
   public Date createDate;
