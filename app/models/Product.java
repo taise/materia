@@ -1,6 +1,7 @@
 package models;
 
 import java.util.Date;
+import java.sql.Timestamp;
 
 import play.db.ebean.Model;
 
@@ -28,6 +29,9 @@ public class Product extends Model {
 
   @NotNull
   public String location;
+
+  @Version
+  public Timestamp update;
 
   @CreatedTimestamp
   public Date createDate;
