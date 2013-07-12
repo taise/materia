@@ -1,7 +1,16 @@
-@(message: String)
+@(products: List[models.Product])
 
-@main("Welcome to Play 2.1") {
-    
-    @play20.welcome(message, style = "Java")
-    
-}
+<body>
+  <table>
+    @for(product <- products) {
+    <tr>
+      <td>@product.id</td>
+      <td>@product.name</td>
+      <td>@product.price</td>
+      <td>@product.quantity</td>
+      <td>@product.location</td>
+      <td>@product.updateDate</td>
+    </tr>
+  }
+  </table>
+</body>
