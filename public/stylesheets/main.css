@@ -1,0 +1,7 @@
+.productListing {
+  border: solid 4px #555555;
+  border-collapse: separate;
+}
+.productListing td {
+  border: solid 2px #888888;
+}
