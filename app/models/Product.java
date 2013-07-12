@@ -23,7 +23,7 @@ public class Product extends Model {
   public Long price;
 
   @NotNull
-  public String quantity;
+  public Long quantity;
 
   @NotNull
   public String location;
