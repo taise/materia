@@ -16,7 +16,7 @@ public class Materia extends Controller {
     public static Result index() {
       Finder<Long, Product> finder = new Finder<Long, Product>(Long.class, Product.class);
       List<Product> products = finder.all();
-        return ok(index.render(products));
+        return ok(views.html.product.index.render(products));
     }
   
 }
