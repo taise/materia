@@ -1,7 +1,6 @@
 package models;
 
 import java.util.Date;
-import java.sql.Timestamp;
 
 import play.db.ebean.Model;
 
@@ -9,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Version;
 
-import com.avaje.ebean.annotation.CreatedTimestamp;
 import com.avaje.ebean.validation.NotNull;
 
 
@@ -30,9 +28,6 @@ public class Product extends Model {
   @NotNull
   public String location;
 
-  @Version
-  public Timestamp update;
-
-  @CreatedTimestamp
-  public Date createDate;
+  @NotNull
+  public Date updateDate;
 }
