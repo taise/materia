@@ -1,0 +1,69 @@
+@(productForm: Form[Product])
+
+@import helper._
+
+@main("Materia!") {
+  <h1>Materia!</h1>
+  <h2>入荷登録</h2>
+  
+  @helper.form(action = routes.Materia.arrival) {
+
+    @inputRadioGroup(
+      productForm("name"),
+      options = Seq(
+        "えんぴつ" -> "えんぴつ",
+        "消しゴム" -> "消しゴム",
+        "定規" -> "定規"
+      ),
+      '_label -> "1.商品の選択"
+    )
+
+    @inputRadioGroup(
+      productForm("location"),
+      options = Seq(
+        "東京" -> "東京",
+        "千葉" -> "千葉",
+        "埼玉" -> "埼玉"
+      ),
+      '_label -> "2.保管場所の選択"
+    )
+
+    @inputText(
+      productForm("quantity"),
+      '_label -> "3.入荷数の入力",
+      'placeholder -> "1〜100"
+    )
+    <input type="submit" value="入荷登録">
+  }
+  <a href="@routes.Materia.index()">在庫一覧画面に戻る</a>
+}
+
+@**
+*<!--
+*  <div id="name">
+*    <label class="name">1.商品の選択</label>
+*    <div class="nameGroup">
+*      <input type="radio" name="name" value="えんぴつ" checked>えんぴつ
+*      <input type="radio" name="name" value="消しゴム">消しゴム
+*      <input type="radio" name="name" value="定規">定規
+*    </div>
+*  </div>
+*
+*    <div id="location">
+*      <label class="name">2.保管場所の選択</label>
+*      <div class="locationGroup">
+*        <input type="radio" name="location" value="東京" checked>東京
+*        <input type="radio" name="location" value="千葉">千葉
+*        <input type="radio" name="location" value="埼玉">埼玉
+*      </div>
+*    </div>
+*
+*    <div class="quantity">
+*      <label class="name">3.入荷数の入力(1-100個)</label>
+*      <div class="quantityText">
+*        <input type="text" name="quantity" value="1">
+*      </div>
+*    </div>
+*    <input type="submit" value="入荷登録">
+*-->
+**@

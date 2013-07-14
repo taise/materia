@@ -9,7 +9,7 @@ create table product (
   price                     bigint not null,
   quantity                  bigint not null,
   location                  varchar(255) not null,
-  update_date               datetime not null,
+  updateDate                datetime,
   constraint pk_product primary key (id))
 ;
 
