@@ -5,10 +5,7 @@ import play.mvc.*;
 import play.data.*;
 import static play.data.Form.*;
 
-//TODO: separate to arrival controller
-//import views.html.product.*;
-//import views.html.arrival.*;
-import views.html.*;
+import views.html.product.*;
 
 import java.util.List;
 import java.util.Date;
@@ -33,20 +30,20 @@ public class Materia extends Controller {
     public static Result index() {
       List<Product> products = Product.find.all();
         return ok(
-            views.html.product.index.render(products)
+            index.render(products)
         );
     }
   
     public static Result newArrival() {
       return ok(
-          views.html.arrival.form.render(productForm)
+          arrivalForm.render(productForm)
       );
     }
 
     public static Result arrival() {
       Form<Product> productForm = form(Product.class).bindFromRequest();
       if(productForm.hasErrors()) {
-        return badRequest(views.html.arrival.form.render(productForm));
+        return badRequest(arrivalForm.render(productForm));
       } else {
         Product product =  productForm.get();
         Product updatedProduct = Product.findBy(product.name, product.location);
