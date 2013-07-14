@@ -14,8 +14,7 @@ import java.util.List;
 import java.util.Date;
 
 import models.Product;
-import play.db.ebean.Model.Finder;
-import com.avaje.ebean.Query;
+
 
 public class Materia extends Controller {
   
@@ -26,7 +25,7 @@ public class Materia extends Controller {
 
 
     public static Result index() {
-      List<Product> products = productsAll();
+      List<Product> products = Product.find.all();
         return ok(
             views.html.product.index.render(products)
         );
@@ -45,25 +44,15 @@ public class Materia extends Controller {
       } else {
         Product product =  productForm.get();
 
-        Product updatedProduct = findBy(product.name, product.location);
+        Product updatedProduct = Product.findBy(product.name, product.location);
 
         updatedProduct.quantity += product.quantity;
         updatedProduct.update();
       }
 
-      List<Product> products = productsAll();
+      List<Product> products = Product.find.all();
       return ok(views.html.product.index.render(products));
     }
 
-    protected static List<Product> productsAll() {
-      Finder<Long, Product> finder = new Finder<Long, Product>(Long.class, Product.class);
-      List<Product> products = finder.all();
-      return products;
-    }
-
-    protected static Product findBy(String name, String location) {
-      Finder<Long, Product> finder = new Finder<Long, Product>(Long.class, Product.class);
-      Query<Product> query = finder.where("name = '" + name + "' AND location = '" + location + "'");
-      return query.findUnique();
-    }
+    // if you want define common method, write protected static method
 }
