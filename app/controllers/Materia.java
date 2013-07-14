@@ -23,6 +23,12 @@ public class Materia extends Controller {
    */
   final static Form<Product> productForm = form(Product.class);
 
+  /**
+   * Directly redirect Materia home.
+   */
+  public static Result GO_HOME = redirect(
+      routes.Materia.index()
+      );
 
     public static Result index() {
       List<Product> products = Product.find.all();
@@ -43,15 +49,12 @@ public class Materia extends Controller {
         return badRequest(views.html.arrival.form.render(productForm));
       } else {
         Product product =  productForm.get();
-
         Product updatedProduct = Product.findBy(product.name, product.location);
 
         updatedProduct.quantity += product.quantity;
         updatedProduct.update();
+        return GO_HOME;
       }
-
-      List<Product> products = Product.find.all();
-      return ok(views.html.product.index.render(products));
     }
 
     // if you want define common method, write protected static method
