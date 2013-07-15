@@ -61,6 +61,7 @@ public class Materia extends Controller {
 
     public static Result arrival() {
       Form<Product> productForm = form(Product.class).bindFromRequest();
+      // Validation of input data
       checkStockOperationForm(productForm);
       checkQuantityLimit(productForm);
       if(productForm.hasErrors()) {
@@ -69,6 +70,11 @@ public class Materia extends Controller {
 
       Product product =  productForm.get();
       Product updatedProduct = Product.findBy(product.name, product.location);
+      // Exist check for update data
+      if(updatedProduct == null) {
+        productForm.reject("name", "商品が登録されていません。");
+        return badRequest(arrivalForm.render(productForm));
+      }
 
       updatedProduct.quantity += product.quantity;
       updatedProduct.update();
@@ -91,6 +97,11 @@ public class Materia extends Controller {
 
       Product product =  productForm.get();
       Product updatedProduct = Product.findBy(product.name, product.location);
+      // Exist check for update data
+      if(updatedProduct == null) {
+        productForm.reject("name", "商品が登録されていません。");
+        return badRequest(shippingForm.render(productForm));
+      }
 
       updatedProduct.quantity -= product.quantity;
       if(updatedProduct.quantity < 0) {
@@ -132,9 +143,13 @@ public class Materia extends Controller {
      * Check the quantity is between min to max.(bang method)
      */
     protected static void checkQuantityLimit(Form<Product> form) {
-      long quantity = form.get().quantity;
-      if(quantity < 0 || quantity > 100) {
-        form.reject("quantity", "出荷数が在庫数を超えています。");
+      try {
+        long quantity = form.get().quantity;
+        if(quantity < 0 || quantity > 100) {
+          form.reject("quantity", "出荷数が在庫数を超えています。");
+        }
+      } catch(NullPointerException e) {
+        // this null checked by checkStockOperationForm
       }
     }
 }

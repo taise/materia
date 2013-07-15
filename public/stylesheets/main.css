@@ -5,3 +5,9 @@
 .productListing td {
   border: solid 2px #888888;
 }
+dt label {
+  font-weight: bold;
+}
+dd.error {
+  color: red;
+}
