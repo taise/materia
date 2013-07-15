@@ -35,6 +35,13 @@ public class Product extends Model {
 
 
   @Override
+  public void save() {
+    this.quantity = new Long(0);
+    updateDate();
+    super.save();
+  }
+
+  @Override
   public void update() {
     updateDate();
     super.update();

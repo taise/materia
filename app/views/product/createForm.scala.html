@@ -1,0 +1,32 @@
+@(productForm: Form[Product])
+
+@import helper._
+
+@main("Materia!") {
+  <h1>Materia!</h1>
+  <h2>新規商品登録</h2>
+  
+  @helper.form(action = routes.Materia.create) {
+
+    @inputText(
+      productForm("name"),
+      '_label -> "1.商品名",
+      'placeholder -> "例: えんぴつ"
+    )
+
+    @inputText(
+      productForm("location"),
+      '_label -> "2.保管場所",
+      'placeholder -> "例: 東京"
+    )
+
+    @inputText(
+      productForm("price"),
+      '_label -> "3.値段",
+      'placeholder -> "例: 100"
+    )
+    <input type="submit" value="新規商品登録">
+  }
+  <a href="@routes.Materia.index()">在庫一覧画面に戻る</a>
+}
+

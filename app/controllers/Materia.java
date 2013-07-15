@@ -29,20 +29,33 @@ public class Materia extends Controller {
 
     public static Result index() {
       List<Product> products = Product.find.all();
-        return ok(
-            index.render(products)
-        );
+        return ok(index.render(products));
     }
   
+    public static Result newProduct() {
+      return ok(createForm.render(productForm));
+    }
+
+    public static Result create() {
+      Form<Product> productForm = form(Product.class).bindFromRequest();
+      if(productForm.hasErrors()) {
+        return badRequest(createForm.render(productForm));
+      }
+      Product product = productForm.get();
+      product.save();
+      return GO_HOME;
+    }
+
+    /**
+     * Arrival Oparation
+     */
     public static Result newArrival() {
-      return ok(
-          arrivalForm.render(productForm)
-      );
+      return ok(arrivalForm.render(productForm));
     }
 
     public static Result arrival() {
       Form<Product> productForm = form(Product.class).bindFromRequest();
-      checkForm(productForm);
+      checkStockOperationForm(productForm);
       checkQuantityLimit(productForm);
       if(productForm.hasErrors()) {
         return badRequest(arrivalForm.render(productForm));
@@ -55,15 +68,16 @@ public class Materia extends Controller {
       return GO_HOME;
     }
 
+    /**
+     * Shipping Oparation
+     */
     public static Result newShipping() {
-      return ok(
-          shippingForm.render(productForm)
-      );
+      return ok(shippingForm.render(productForm));
     }
 
     public static Result shipping() {
       Form<Product> productForm = form(Product.class).bindFromRequest();
-      checkForm(productForm);
+      checkStockOperationForm(productForm);
       if(productForm.hasErrors()) {
         return badRequest(shippingForm.render(productForm));
       }
@@ -82,7 +96,7 @@ public class Materia extends Controller {
     /**
      * Check form values are not blanc or empty(.bang method)
      */
-    protected static void checkForm(Form<Product> form) {
+    protected static void checkStockOperationForm(Form<Product> form) {
       if(form.field("name").valueOr("").isEmpty()) {
         form.reject("name", "商品が選択されていません。");
       }
