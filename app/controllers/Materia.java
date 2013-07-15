@@ -54,5 +54,28 @@ public class Materia extends Controller {
       }
     }
 
+    public static Result newShipping() {
+      return ok(
+          shippingForm.render(productForm)
+      );
+    }
+
+    public static Result shipping() {
+      Form<Product> productForm = form(Product.class).bindFromRequest();
+      if(productForm.hasErrors()) {
+        return badRequest(shippingForm.render(productForm));
+      } else {
+        Product product =  productForm.get();
+        Product updatedProduct = Product.findBy(product.name, product.location);
+
+        updatedProduct.quantity -= product.quantity;
+        if(updatedProduct.quantity < 0) {
+          return badRequest(shippingForm.render(productForm));
+        }
+        updatedProduct.update();
+        return GO_HOME;
+      }
+    }
+
     // if you want define common method, write protected static method
 }

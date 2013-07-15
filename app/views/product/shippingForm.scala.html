@@ -1,0 +1,40 @@
+@(productForm: Form[Product])
+
+@import helper._
+
+@main("Materia!") {
+  <h1>Materia!</h1>
+  <h2>出荷登録</h2>
+  
+  @helper.form(action = routes.Materia.shipping) {
+
+    @inputRadioGroup(
+      productForm("name"),
+      options = Seq(
+        "えんぴつ" -> "えんぴつ",
+        "消しゴム" -> "消しゴム",
+        "定規" -> "定規"
+      ),
+      '_label -> "1.商品の選択"
+    )
+
+    @inputRadioGroup(
+      productForm("location"),
+      options = Seq(
+        "東京" -> "東京",
+        "千葉" -> "千葉",
+        "埼玉" -> "埼玉"
+      ),
+      '_label -> "2.保管場所の選択"
+    )
+
+    @inputText(
+      productForm("quantity"),
+      '_label -> "3.出荷数の入力",
+      'placeholder -> "1〜"
+    )
+    <input type="submit" value="出荷登録">
+  }
+  <a href="@routes.Materia.index()">在庫一覧画面に戻る</a>
+}
+
