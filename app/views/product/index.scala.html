@@ -16,9 +16,9 @@
         <td>場所</td>
         <td>最終更新日時</td>
       </tr>
-      @for(product <- products) {
+      @for((product, index) <- products.zipWithIndex) {
       <tr>
-        <td>@product.id</td>
+        <td>@(index + 1)</td>
         <td>@product.name</td>
         <td>@product.price</td>
         <td>@product.quantity</td>
