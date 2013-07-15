@@ -42,13 +42,12 @@ public class Materia extends Controller {
 
     public static Result arrival() {
       Form<Product> productForm = form(Product.class).bindFromRequest();
+      checkForm(productForm);
+      checkQuantityLimit(productForm);
       if(productForm.hasErrors()) {
         return badRequest(arrivalForm.render(productForm));
       }
       Product product =  productForm.get();
-      if(product.quantity < 0 || product.quantity > 100) {
-        return badRequest(arrivalForm.render(productForm));
-      }
       Product updatedProduct = Product.findBy(product.name, product.location);
 
       updatedProduct.quantity += product.quantity;
@@ -64,18 +63,44 @@ public class Materia extends Controller {
 
     public static Result shipping() {
       Form<Product> productForm = form(Product.class).bindFromRequest();
+      checkForm(productForm);
       if(productForm.hasErrors()) {
         return badRequest(shippingForm.render(productForm));
       }
       Product product =  productForm.get();
       Product updatedProduct = Product.findBy(product.name, product.location);
-
       updatedProduct.quantity -= product.quantity;
+
       if(updatedProduct.quantity < 0) {
+        productForm.reject("quantity", "出荷数が在庫数を超えています。");
         return badRequest(shippingForm.render(productForm));
       }
       updatedProduct.update();
       return GO_HOME;
     }
-    // if you want define common method, write protected static method
+
+    /**
+     * Check form values are not blanc or empty(.bang method)
+     */
+    protected static void checkForm(Form<Product> form) {
+      if(form.field("name").valueOr("").isEmpty()) {
+        form.reject("name", "商品が選択されていません。");
+      }
+      if(form.field("location").valueOr("").isEmpty()) {
+        form.reject("location", "保管場所が選択されていません。");
+      }
+      if(form.field("quantity").valueOr("").isEmpty()) {
+        form.reject("quantity", "数量が入力されていません。");
+      }
+    }
+
+    /**
+     * Check the quantity is between min to max.(bang method)
+     */
+    protected static void checkQuantityLimit(Form<Product> form) {
+      long quantity = form.get().quantity;
+      if(quantity < 0 || quantity > 100) {
+        form.reject("quantity", "出荷数が在庫数を超えています。");
+      }
+    }
 }
