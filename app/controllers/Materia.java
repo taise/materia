@@ -116,24 +116,32 @@ public class Materia extends Controller {
      * Check form values are not blanc or empty(.bang method)
      */
     protected static void checkStockOperationForm(Form<Product> form) {
+      checkName(form);
+      checkLocation(form);
+      checkQuantity(form);
+    }
+
+    protected static void checkCreateForm(Form<Product> form) {
+      checkName(form);
+      checkLocation(form);
+      checkPrice(form);
+    }
+    protected static void checkName(Form<Product> form) {
       if(form.field("name").valueOr("").isEmpty()) {
         form.reject("name", "商品が選択されていません。");
       }
+    }
+    protected static void checkLocation(Form<Product> form) {
       if(form.field("location").valueOr("").isEmpty()) {
         form.reject("location", "保管場所が選択されていません。");
       }
+    }
+    protected static void checkQuantity(Form<Product> form) {
       if(form.field("quantity").valueOr("").isEmpty()) {
         form.reject("quantity", "数量が入力されていません。");
       }
     }
-
-    protected static void checkCreateForm(Form<Product> form) {
-      if(form.field("name").valueOr("").isEmpty()) {
-        form.reject("name", "商品が選択されていません。");
-      }
-      if(form.field("location").valueOr("").isEmpty()) {
-        form.reject("location", "保管場所が選択されていません。");
-      }
+    protected static void checkPrice(Form<Product> form) {
       if(form.field("price").valueOr("").isEmpty()) {
         form.reject("price", "値段が入力されていません。");
       }
