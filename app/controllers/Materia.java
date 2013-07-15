@@ -38,10 +38,16 @@ public class Materia extends Controller {
 
     public static Result create() {
       Form<Product> productForm = form(Product.class).bindFromRequest();
+      checkCreateForm(productForm);
       if(productForm.hasErrors()) {
         return badRequest(createForm.render(productForm));
       }
+
       Product product = productForm.get();
+      if(Product.findBy(product.name, product.location) != null) {
+        productForm.reject("name", "既に登録されています。");
+        return badRequest(createForm.render(productForm));
+      };
       product.save();
       return GO_HOME;
     }
@@ -60,6 +66,7 @@ public class Materia extends Controller {
       if(productForm.hasErrors()) {
         return badRequest(arrivalForm.render(productForm));
       }
+
       Product product =  productForm.get();
       Product updatedProduct = Product.findBy(product.name, product.location);
 
@@ -81,10 +88,11 @@ public class Materia extends Controller {
       if(productForm.hasErrors()) {
         return badRequest(shippingForm.render(productForm));
       }
+
       Product product =  productForm.get();
       Product updatedProduct = Product.findBy(product.name, product.location);
-      updatedProduct.quantity -= product.quantity;
 
+      updatedProduct.quantity -= product.quantity;
       if(updatedProduct.quantity < 0) {
         productForm.reject("quantity", "出荷数が在庫数を超えています。");
         return badRequest(shippingForm.render(productForm));
@@ -105,6 +113,18 @@ public class Materia extends Controller {
       }
       if(form.field("quantity").valueOr("").isEmpty()) {
         form.reject("quantity", "数量が入力されていません。");
+      }
+    }
+
+    protected static void checkCreateForm(Form<Product> form) {
+      if(form.field("name").valueOr("").isEmpty()) {
+        form.reject("name", "商品が選択されていません。");
+      }
+      if(form.field("location").valueOr("").isEmpty()) {
+        form.reject("location", "保管場所が選択されていません。");
+      }
+      if(form.field("price").valueOr("").isEmpty()) {
+        form.reject("price", "値段が入力されていません。");
       }
     }
 
