@@ -44,14 +44,16 @@ public class Materia extends Controller {
       Form<Product> productForm = form(Product.class).bindFromRequest();
       if(productForm.hasErrors()) {
         return badRequest(arrivalForm.render(productForm));
-      } else {
-        Product product =  productForm.get();
-        Product updatedProduct = Product.findBy(product.name, product.location);
-
-        updatedProduct.quantity += product.quantity;
-        updatedProduct.update();
-        return GO_HOME;
       }
+      Product product =  productForm.get();
+      if(product.quantity < 0 || product.quantity > 100) {
+        return badRequest(arrivalForm.render(productForm));
+      }
+      Product updatedProduct = Product.findBy(product.name, product.location);
+
+      updatedProduct.quantity += product.quantity;
+      updatedProduct.update();
+      return GO_HOME;
     }
 
     public static Result newShipping() {
@@ -64,18 +66,16 @@ public class Materia extends Controller {
       Form<Product> productForm = form(Product.class).bindFromRequest();
       if(productForm.hasErrors()) {
         return badRequest(shippingForm.render(productForm));
-      } else {
-        Product product =  productForm.get();
-        Product updatedProduct = Product.findBy(product.name, product.location);
-
-        updatedProduct.quantity -= product.quantity;
-        if(updatedProduct.quantity < 0) {
-          return badRequest(shippingForm.render(productForm));
-        }
-        updatedProduct.update();
-        return GO_HOME;
       }
-    }
+      Product product =  productForm.get();
+      Product updatedProduct = Product.findBy(product.name, product.location);
 
+      updatedProduct.quantity -= product.quantity;
+      if(updatedProduct.quantity < 0) {
+        return badRequest(shippingForm.render(productForm));
+      }
+      updatedProduct.update();
+      return GO_HOME;
+    }
     // if you want define common method, write protected static method
 }
